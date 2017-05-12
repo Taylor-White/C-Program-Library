@@ -19,6 +19,8 @@ typedef enum {false, true} bool;
 
 
 /*
+TODO: Clean up output
+Current output
 5
 You chose: 5: And binary (&)
 Input a binary number: 
@@ -31,10 +33,7 @@ result: 8209
 Binary result: 00000000000000000010000000010001
 
 
-I think output like this works better. Easier to see exactly
-what is happening.
-
-
+Better output:
 5
 You chose: 5: And binary (&)
 Input a binary number: 
@@ -87,7 +86,7 @@ int main(){
 	};
 	int cur_task;
 
-	printf("starting....\n");	// normally code comes after declarations
+	printf("starting....\n");
 
 	while(repeat == true){
 		printf("Choose a task: \n");
@@ -273,11 +272,6 @@ void print_decimal_to_binary_string(unsigned int decimal){
 		return;
 	}	
 
-	// it is common for c programmers to use for so this is
-	// compressed into fewer statements
-	// for (char *pr = output_str, k = 1, i = 0; k <=d; i++)
-	// it makes for a single line that says it all and
-	// easier to see the logic
 	char * pr = output_str;
 	power_of_two=1;
 	bit_index=0;

@@ -232,11 +232,6 @@ void print_decimal_to_binary_string(unsigned int decimal){
 		return;
 	}	
 
-	// it is common for c programmers to use for so this is
-	// compressed into fewer statements
-	// for (char *pr = output_str, k = 1, i = 0; k <=d; i++)
-	// it makes for a single line that says it all and
-	// easier to see the logic
 	char * pr = output_str;
 	power_of_two=1;
 	bit_index=0;
