@@ -10,6 +10,7 @@ void print_decimal_to_binary_string(unsigned int result);
 unsigned int decimal_mod_bit_at(unsigned int decimal, unsigned int index, int type);
 void is_power_of_two(unsigned int input);
 void is_power_of_two_one_line(unsigned int input);
+void binary_swap(unsigned int * a, unsigned int * b);
 
 typedef enum {false, true} bool;
 
@@ -81,6 +82,7 @@ int main(){
 	"12: Binary, flip bit at... (first bit is 0)",
 	"13: Binary, check if a number is a power of 2",
 	"14: Binary, check if a number is a power of 2 in one line",
+	"15: Binary addition",
 	
 	NULL
 	};
@@ -250,6 +252,17 @@ int main(){
 				binary_string_to_decimal(input_one, &int_input_1);
 				is_power_of_two_one_line(int_input_1);
 				break;
+			case 15:
+				printf("Input a binary number: \n");
+				scanf("%s", input_one);
+				printf("Input a binary number: \n");
+				scanf("%s", input_two);
+				binary_string_to_decimal(input_one, &int_input_1);
+				binary_string_to_decimal(input_two, &int_input_2);
+				binary_swap(&int_input_1, &int_input_2);
+				print_decimal_to_binary_string(int_input_1);
+				print_decimal_to_binary_string(int_input_2);
+				break;
 			default:
 				printf("Invalid input\n");
 				repeat = false;
@@ -400,4 +413,9 @@ void is_power_of_two_one_line(unsigned int input){
 	}else{
 		printf("result: %d is not a power of 2\n", input);
 	}
+}
+void binary_swap(unsigned int * a, unsigned int * b){
+	*a = *a ^ *b;
+	*b = *a ^ *b;
+	*a = *a ^ *b;
 }
