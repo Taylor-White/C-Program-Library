@@ -18,11 +18,47 @@ typedef enum {false, true} bool;
 #define CLEAR 1
 #define FLIP 2
 
+
+/*
+TODO: Clean up output
+Current output
+5
+You chose: 5: And binary (&)
+Input a binary number: 
+0110110000110101
+result: 27701
+Input another binary number: 
+1011000111010011
+result: 45523
+result: 8209
+Binary result: 00000000000000000010000000010001
+
+
+Better output:
+5
+You chose: 5: And binary (&)
+Input a binary number: 
+0110110000110101
+Input another binary number: 
+1011000111010011
+
+Bitwise AND operation:
+
+00000000000000000110110000110101
+&
+00000000000000001011000111010011
+=
+00000000000000000010000000010001
+*/
+
+
+
+
+
 int main(){
 
 	unsigned int int_input_1;
 	unsigned int int_input_2;
-	printf("starting....\n");
 
 	char input_one[80];
 	char input_two[80];
@@ -46,11 +82,13 @@ int main(){
 	"12: Binary, flip bit at... (first bit is 0)",
 	"13: Binary, check if a number is a power of 2",
 	"14: Binary, check if a number is a power of 2 in one line",
-	"15: Binary addition",
-
+	"15: Binary swap",
+	
 	NULL
 	};
 	int cur_task;
+
+	printf("starting....\n");
 
 	while(repeat == true){
 		printf("Choose a task: \n");
@@ -59,6 +97,7 @@ int main(){
 			printf("%s\n", tasks[i]);
 			i++;
 		}
+		// add error checking to inputs
 		scanf(" %d", &cur_task);
 		printf("You chose: %s\n", tasks[cur_task]);
 		switch(cur_task){
@@ -221,7 +260,9 @@ int main(){
 				binary_string_to_decimal(input_one, &int_input_1);
 				binary_string_to_decimal(input_two, &int_input_2);
 				binary_swap(&int_input_1, &int_input_2);
-				printf("Results: %d, %d\n", int_input_1,int_input_2);
+				print_decimal_to_binary_string(int_input_1);
+				print_decimal_to_binary_string(int_input_2);
+				break;
 			default:
 				printf("Invalid input\n");
 				repeat = false;
@@ -253,7 +294,8 @@ void print_decimal_to_binary_string(unsigned int decimal){
 	}
 	power_of_two = power_of_two >> 1;
 	bit_index--;
-	for(int z=0; z < (INT_SIZE - bit_index - 1); z++,pr++){
+	int z;;
+	for(z=0; z < (INT_SIZE - bit_index - 1); z++,pr++){
 		*pr = '0';
 	}
 
@@ -275,25 +317,34 @@ void print_decimal_to_binary_string(unsigned int decimal){
 	output_str = NULL;
 }	
 
+// Long functions, or functions that deserve some explanation (like is_power_of_two_one_line)
+// should have some block comments. I added a couple of examples.
+
+// Convert a binary string to a decimal number by adding each
+// digit and shifting left one.
+//
+// Any value other than a '1' is set to a '0'.
+// (I think it's better to refuse a non-0/1 value instead)
+//
 void binary_string_to_decimal(char * input, unsigned int * result){
 
 	int digit;
+	int i;
 	*result = 0;
-	int exponent = 0;
 	while(*input){
-		int i = (int)(*input-'0');
+		i = (int)(*input-'0');
 		if(i != 1){i = 0;}
-		int digit = i;
+		digit = i;
 		*result = (*result << 1 ) + digit;
-		exponent++;
 		input++;
 	}
 }
 
 void decimal_string_to_decimal(char * input, unsigned int *result){
 	*result = 0;
+	int i;
 	while(*input){
-		int i = (int)(*input-'0');
+		i = (int)(*input-'0');
 		if(i > 9 || i < -9){i = 0;}
 		*result = *result * 10 + i;
 		input++;
@@ -304,9 +355,13 @@ void print_decimal_to_hex(int input){
 	printf(" 0x%08x\n", input);
 }
 
+// Set, clear or flip the bit at position index (from the least significant digit) of the decimal
+//
+// (I think it is better to rename to integer_mod_bit_at because it is stored as an integer,
+// not specifically a decimal.)
 unsigned int decimal_mod_bit_at(unsigned int decimal, unsigned int index, int type){
 	unsigned int bit = 0;
-	if(index < 1){return(decimal);}
+	if(index == 0){return(decimal);}
 	bit = 1 << index;
 	if(type == SET){
 		return(bit | decimal);
@@ -323,17 +378,29 @@ unsigned int decimal_mod_bit_at(unsigned int decimal, unsigned int index, int ty
 }
 
 void is_power_of_two(unsigned int input){
-	int x = 1;
+	int x;
 	int len = sizeof(int)*8;
-	while(x < len){
+	for (x = 1; x < len; x<<= 1) {
 		if(x == input){
 			printf("result:  %d is a power of 2\n", input);
 			return;
 		}
-		x <<= 1;
 	}
 	printf("result: %d is not a power of 2\n", input);
 }
+
+// A version in one line without a loop.
+//
+// If it is a power of 2, then a single bit will be set.
+// Subtracting 1 from a power of 2 will leave all of the
+// bits to the right set to 1, all other bits will be 0.
+//
+// Thus a logical AND of the number and number-1 will
+// always be 0.
+//
+// But this approach will also work for an input of 0,
+// so that is also checked.
+//
 void is_power_of_two_one_line(unsigned int input){
 	if(input && !(input&(input-1))){
 		printf("result:  %d is a power of 2\n", input);
@@ -341,8 +408,6 @@ void is_power_of_two_one_line(unsigned int input){
 		printf("result: %d is not a power of 2\n", input);
 	}
 }
-
-
 void binary_swap(unsigned int * a, unsigned int * b){
 	*a = *a ^ *b;
 	*b = *a ^ *b;
