@@ -3,7 +3,7 @@
 
 
 int main(){
-	char * name = "test.txt";
+	char * name = "test.txt"; //TODO: get filename by passing args through main
 	int size = 0;
 	FILE * fp;
 	fp = fopen(name, "r");
