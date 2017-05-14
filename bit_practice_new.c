@@ -331,15 +331,11 @@ void binary_string_to_decimal(char * input, unsigned int * result){
 	int digit;
 	int i;
 	*result = 0;
-	int exponent = 0;
-	// declaring i and digit outside of the loop will keep them from
-	// having to be allocated again with every iteration of the loop
 	while(*input){
 		i = (int)(*input-'0');
 		if(i != 1){i = 0;}
 		digit = i;
 		*result = (*result << 1 ) + digit;
-		exponent++; // this is never used
 		input++;
 	}
 }
@@ -362,10 +358,10 @@ void print_decimal_to_hex(int input){
 // Set, clear or flip the bit at position index (from the least significant digit) of the decimal
 //
 // (I think it is better to rename to integer_mod_bit_at because it is stored as an integer,
-// not specifically a decimal. It may sound like you don't understand that.)
+// not specifically a decimal.)
 unsigned int decimal_mod_bit_at(unsigned int decimal, unsigned int index, int type){
 	unsigned int bit = 0;
-	if(index == 1){return(decimal);}	// as a nit, seems like 'index == 0' would be slightly more clear
+	if(index == 0){return(decimal);}
 	bit = 1 << index;
 	if(type == SET){
 		return(bit | decimal);
@@ -382,15 +378,13 @@ unsigned int decimal_mod_bit_at(unsigned int decimal, unsigned int index, int ty
 }
 
 void is_power_of_two(unsigned int input){
-	int x = 1;
+	int x;
 	int len = sizeof(int)*8;
-	// for (int x = 1; x < len; x<<= 1) {
-	while(x < len){
+	for (x = 1; x < len; x<<= 1) {
 		if(x == input){
 			printf("result:  %d is a power of 2\n", input);
 			return;
 		}
-		x <<= 1;
 	}
 	printf("result: %d is not a power of 2\n", input);
 }
