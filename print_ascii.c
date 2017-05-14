@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<stdlib.h>
 
 int main(){
 	int max = 1 << sizeof(char) * 8;
@@ -6,5 +7,5 @@ int main(){
 	for(i=0; i < max; i++){
 		printf("number %d: %c\n", i, i);
 	}
-	return 1;
+	exit(0);
 }	
